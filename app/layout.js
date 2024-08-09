@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -11,7 +11,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} bg-dark-very-dark-blue`}>
+        <div className="absolute top-0 left-0 -z-20">
+          <Image
+            src="/images/bg-desktop-dark.jpg"
+            width={1900}
+            height={800}
+            alt="background"
+            className="object-cover"
+          />
+        </div>
+        {children}
+      </body>
     </html>
   );
 }
