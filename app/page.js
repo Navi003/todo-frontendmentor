@@ -35,7 +35,7 @@ export default function Home() {
           onChange={(e) => setInput(e.target.value)}
           value={input}
           type="text"
-          className="w-full p-4 pl-16 font-thin shadow-md bg-dark-very-dark-grayish-blue-2 text-dark-light-grayish-blue"
+          className="w-full p-4 pl-16 font-light shadow-md bg-dark-very-dark-grayish-blue-2 text-dark-light-grayish-blue"
         />
       </form>
       <div className="divide-y divide-neutral-dark-grayish-blue ">
@@ -43,9 +43,25 @@ export default function Home() {
           return (
             <div
               key={todo.id}
-              className="flex justify-between w-full p-4 font-thin bg-dark-very-dark-grayish-blue-2 text-dark-light-grayish-blue "
+              className="flex justify-between w-full p-4 font-light bg-dark-very-dark-grayish-blue-2 text-dark-light-grayish-blue "
             >
-              <p> {todo.comment}</p>
+              <p className="flex items-center gap-4">
+                <span
+                  className="cursor-pointer w-[25px] h-[25px] flex items-center justify-center border-[.2px] rounded-full p-0.5"
+                  style={{
+                    background:
+                      "linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))",
+                  }}
+                >
+                  <Image
+                    src="/images/icon-check.svg"
+                    height={15}
+                    width={15}
+                    alt="Check"
+                  />
+                </span>
+                {todo.comment}
+              </p>
               <span
                 className="cursor-pointer"
                 onClick={() => handleDelete(todo.id)}
