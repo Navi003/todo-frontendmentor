@@ -5,11 +5,6 @@ import Heading from "./_components/Heading";
 import { useState } from "react";
 import Actions from "./_components/Actions";
 
-/* 
-      "check-background":
-        "linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))",
-*/
-
 export default function Home() {
   const [input, setInput] = useState("");
   const [todo, setTodo] = useState([]);
@@ -21,10 +16,19 @@ export default function Home() {
       ...state,
       { id: Math.random(), comment: input, active: true, complete: false },
     ]);
+
+    setInput("");
   }
 
   function handleDelete(id) {
     setTodo((state) => state.filter((todo) => todo.id !== id));
+  }
+  function handleCompleted(id) {
+    setTodo((prevTodo) =>
+      prevTodo.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   }
 
   return (
@@ -45,20 +49,30 @@ export default function Home() {
               key={todo.id}
               className="flex justify-between w-full p-4 font-light bg-dark-very-dark-grayish-blue-2 text-dark-light-grayish-blue "
             >
-              <p className="flex items-center gap-4">
+              <p
+                className={`flex items-center gap-4 ${
+                  todo.completed && "line-through"
+                }`}
+              >
                 <span
+                  onClick={() => handleCompleted(todo.id)}
                   className="cursor-pointer w-[25px] h-[25px] flex items-center justify-center border-[.2px] rounded-full p-0.5"
                   style={{
-                    background:
-                      "linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))",
+                    background: `${
+                      todo.completed
+                        ? " linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))"
+                        : "transparent"
+                    }`,
                   }}
                 >
-                  <Image
-                    src="/images/icon-check.svg"
-                    height={15}
-                    width={15}
-                    alt="Check"
-                  />
+                  {todo.completed && (
+                    <Image
+                      src="/images/icon-check.svg"
+                      height={15}
+                      width={15}
+                      alt="Check"
+                    />
+                  )}
                 </span>
                 {todo.comment}
               </p>
