@@ -32,9 +32,9 @@ export default function Home() {
   }
 
   return (
-    <main className="w-[600px] mx-auto  min-h-screen">
+    <main className="w-[360px] sm:w-[420px] md:w-[680px] l mx-auto  min-h-screen">
       <Heading />
-      <form className="w-full mt-10 mb-10" onSubmit={handleSubmit}>
+      <form className="w-full mt-10 mb-6" onSubmit={handleSubmit}>
         <input
           onChange={(e) => setInput(e.target.value)}
           value={input}
