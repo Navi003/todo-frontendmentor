@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import bgDark from "../public/images/bg-desktop-dark.jpg";
+import Link from "next/link";
+import Navigation from "./_components/Navigation";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,6 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} bg-dark-very-dark-blue`}>
+        <Navigation />
         <Image
           src={bgDark}
           alt="background"
