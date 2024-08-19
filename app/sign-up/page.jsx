@@ -1,9 +1,37 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Input from "../_components/Input";
 
-function page() {
+function Page() {
+  const [data, setData] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const name = e.target[0].value;
+    const email = e.target[1].value;
+    const password = e.target[2].value;
+
+    setData({
+      name,
+      email,
+      password,
+    });
+    sendRequest();
+  }
+
+  async function sendRequest() {
+    const res = await fetch("/api/user/sign-up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <Input
         required={true}
         type="text"
@@ -40,4 +68,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
