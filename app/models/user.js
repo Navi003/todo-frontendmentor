@@ -1,3 +1,5 @@
+import { Schema, model, models } from "mongoose";
+
 const UserSchema = new Schema({
   email: {
     type: "string",
@@ -19,7 +21,7 @@ const UserSchema = new Schema({
         text: "string",
         date: { type: Date, default: Date.now() },
         active: { type: "boolean", default: true },
-        completed: { type: "boolean", default: flase },
+        completed: { type: "boolean", default: false },
       },
     ],
   },
