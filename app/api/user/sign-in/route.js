@@ -1,69 +1,35 @@
-import User from "@/models/user";
-import { createToken } from "@/lib/createToken";
+import User from "@/app/models/user";
 
-import { connectToDb } from "@/db/db";
+import { connectToDb } from "@/app/services/mongodb";
 // import { checkUser } from "@/lib/hashPassword";
-import { cookies } from "next/headers";
-import { jwtDecode } from "jwt-decode";
+// import { cookies } from "next/headers";
+// import { jwtDecode } from "jwt-decode";
 
 export const POST = async (request, response) => {
   const data = await request.json();
+  console.log(data);
 
-  if (data.email || data.password || data.name) {
-    try {
-      await connectToDb();
+  try {
+    await connectToDb();
 
-      const foundUser = await User.findOne({
-        email: data.email,
-      });
-
-      if (foundUser) {
-        const match = await checkUser(foundUser, data.password);
-        if (match) {
-          const { email, _id, name } = foundUser;
-          const token = createToken({ email, _id, name });
-
-          const create = (data) => {
-            cookies().set({
-              name: "token ",
-              value: data,
-            });
-          };
-
-          create(token);
-
-          //   const responseUser = { ...foundUser, password: null };
-
-          return new Response(JSON.stringify({ token, user: foundUser }), {
-            status: 200,
-            statusText: "Sucess",
-          });
-        }
-      } else {
-        throw new Error("Something went wrong");
-      }
-    } catch (error) {
-      console.log(error);
-      return new Response("Something went wrong", { status: 500 });
-    }
-  } else {
-    try {
-      await connectToDb();
-
-      const { email, _id, name } = jwtDecode(data.token);
-
-      const foundUser = await User.findById({
-        _id,
-      });
-
-      const token = createToken({ email, _id, name });
-
-      return new Response(JSON.stringify({ token, user: foundUser }), {
+    const foundUser = await User.findOne({
+      email: data.email,
+    });
+    console.log(foundUser);
+    if (foundUser.password === data.password) {
+      return Response.json({
+        message: "sucess",
         status: 200,
-        statusText: "Sucess",
+        data: foundUser,
       });
-    } catch (error) {
-      console.log(error);
     }
+
+    console.log(match);
+  } catch (error) {
+    console.log(error);
+    return Response.json({
+      message: "fail",
+      status: 450,
+    });
   }
 };

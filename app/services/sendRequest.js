@@ -1,6 +1,5 @@
-export async function sendRequest(data) {
-  console.log(data);
-  const res = await fetch("/api/user/sign-up", {
+export async function sendRequest(data, url) {
+  const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

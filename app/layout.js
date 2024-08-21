@@ -3,6 +3,7 @@ import "./globals.css";
 import Image from "next/image";
 import bgDark from "../public/images/bg-desktop-dark.jpg";
 import Navigation from "./_components/Navigation";
+import { UserProvider } from "./_components/userContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,14 +15,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} bg-dark-very-dark-blue`}>
-        <Navigation />
-        <Image
-          src={bgDark}
-          alt="background"
-          className="absolute top-0 left-0 object-cover w-full -z-20 h-72 "
-        />
-
-        {children}
+        <UserProvider>
+          <Navigation />
+          <Image
+            src={bgDark}
+            alt="background"
+            className="absolute top-0 left-0 object-cover w-full -z-20 h-72 "
+          />
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

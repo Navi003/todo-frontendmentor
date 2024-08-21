@@ -26,7 +26,7 @@ function Page() {
       email,
       password,
     });
-    const res = await sendRequest(data);
+    const res = await sendRequest(data, "/api/user/sign-up");
 
     if (res.status === 200) {
       notify();
