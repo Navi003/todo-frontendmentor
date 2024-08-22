@@ -4,17 +4,19 @@ import Image from "next/image";
 import Heading from "./_components/Heading";
 import { useState } from "react";
 import Actions from "./_components/Actions";
+import { useUser } from "./_components/userContext";
 
 export default function Home() {
+  const { setTodo, todo } = useUser();
+
   const [input, setInput] = useState("");
-  const [todo, setTodo] = useState([]);
 
   function handleSubmit(e) {
     e.preventDefault();
-
+    console.log(todo);
     setTodo((state) => [
       ...state,
-      { id: Math.random(), comment: input, active: true, complete: false },
+      { id: Math.random(), text: input, active: true, complete: false },
     ]);
 
     setInput("");
@@ -43,7 +45,7 @@ export default function Home() {
         />
       </form>
       <div className="divide-y divide-neutral-dark-grayish-blue ">
-        {todo.map((todo) => {
+        {todo?.map((todo) => {
           return (
             <div
               key={todo.id}
@@ -74,7 +76,7 @@ export default function Home() {
                     />
                   )}
                 </span>
-                {todo.comment}
+                {todo.text}
               </p>
               <span
                 className="cursor-pointer"
@@ -90,7 +92,7 @@ export default function Home() {
             </div>
           );
         })}
-        <Actions length={todo.length} />
+        <Actions length={todo?.length} />
       </div>
     </main>
   );

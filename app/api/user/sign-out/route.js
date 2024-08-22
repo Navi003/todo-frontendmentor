@@ -8,23 +8,24 @@ import { connectToDb } from "@/app/services/mongodb";
 export const POST = async (request, response) => {
   const data = await request.json();
 
+  console.log(data);
+
   try {
     await connectToDb();
 
     const foundUser = await User.findOne({
-      email: data.email,
+      email: "dhimannavjot1@gmail.com",
     });
-    console.log(foundUser);
-    if (foundUser.password === data.password) {
-      return Response.json({
-        message: "sucess",
-        status: 200,
-        data: {
-          todos: foundUser.todos,
-          name: foundUser.name,
-        },
-      });
-    }
+
+    const result = await foundUser.updateOne(
+      { $set: { todos: { items: data } } } // Replace the todos array
+    );
+    console.log(result);
+
+    return Response.json({
+      message: "sucess",
+      status: 201,
+    });
   } catch (error) {
     console.log(error);
     return Response.json({

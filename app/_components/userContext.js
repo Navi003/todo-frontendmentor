@@ -3,14 +3,18 @@ import { createContext, useState, useContext } from "react";
 
 const UserContext = createContext();
 
-const initState = false;
-
 function UserProvider({ children }) {
+  const initState = false;
   const [logedIn, setLogedIn] = useState(initState);
   const [user, setUser] = useState("");
+  const [todo, setTodo] = useState([]);
+
+  console.log(todo);
 
   return (
-    <UserContext.Provider value={{ setLogedIn, logedIn, setUser, user }}>
+    <UserContext.Provider
+      value={{ setLogedIn, logedIn, setUser, user, todo, setTodo }}
+    >
       {children}
     </UserContext.Provider>
   );

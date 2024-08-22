@@ -9,6 +9,7 @@ function Input({
   placeholder,
   className,
   onChange,
+  value,
 }) {
   return (
     <div className="mt-4">
@@ -23,6 +24,7 @@ function Input({
         type={type}
         id={id}
         name={name}
+        value={value}
         required={required}
         placeholder={placeholder}
         onChange={onChange}

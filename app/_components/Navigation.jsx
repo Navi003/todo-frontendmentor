@@ -2,11 +2,15 @@
 import Link from "next/link";
 import React from "react";
 import { useUser } from "./userContext";
+import { sendRequest } from "../services/sendRequest";
 
 function Navigation() {
-  const { user, logout } = useUser();
+  const { user, logout, todo } = useUser();
 
-  console.log(user);
+  async function handleSignOut() {
+    const res = await sendRequest(todo, "/api/user/sign-out");
+    const userData = await res.json();
+  }
 
   return (
     <nav className="flex items-center justify-between gap-6 p-4 shadow-md backdrop-blur-sm bg-white/30">
@@ -24,7 +28,7 @@ function Navigation() {
           </Link>
         </div>
       ) : (
-        <span>Sign-out</span>
+        <span onClick={handleSignOut}>Sign-out</span>
       )}
     </nav>
   );
