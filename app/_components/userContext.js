@@ -8,12 +8,22 @@ function UserProvider({ children }) {
   const [logedIn, setLogedIn] = useState(initState);
   const [user, setUser] = useState("");
   const [todo, setTodo] = useState([]);
+  const [filter, setFilter] = useState("all");
 
   console.log(todo);
 
   return (
     <UserContext.Provider
-      value={{ setLogedIn, logedIn, setUser, user, todo, setTodo }}
+      value={{
+        setLogedIn,
+        logedIn,
+        setUser,
+        user,
+        todo,
+        setTodo,
+        setFilter,
+        filter,
+      }}
     >
       {children}
     </UserContext.Provider>

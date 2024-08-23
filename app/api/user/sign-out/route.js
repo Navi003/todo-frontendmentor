@@ -1,14 +1,13 @@
 import User from "@/app/models/user";
 
 import { connectToDb } from "@/app/services/mongodb";
+import { ObjectId } from "mongodb";
 // import { checkUser } from "@/lib/hashPassword";
 // import { cookies } from "next/headers";
 // import { jwtDecode } from "jwt-decode";
 
 export const POST = async (request, response) => {
   const data = await request.json();
-
-  console.log(data);
 
   try {
     await connectToDb();
@@ -17,9 +16,9 @@ export const POST = async (request, response) => {
       email: "dhimannavjot1@gmail.com",
     });
 
-    const result = await foundUser.updateOne(
-      { $set: { todos: { items: data } } } // Replace the todos array
-    );
+    const result = await foundUser.updateOne({
+      $set: { todos: { items: data } },
+    });
     console.log(result);
 
     return Response.json({

@@ -5,11 +5,14 @@ import { useUser } from "./userContext";
 import { sendRequest } from "../services/sendRequest";
 
 function Navigation() {
-  const { user, logout, todo } = useUser();
+  const { user, logout, todo, setTodo, setUser } = useUser();
 
   async function handleSignOut() {
     const res = await sendRequest(todo, "/api/user/sign-out");
     const userData = await res.json();
+
+    setTodo([]);
+    setUser("");
   }
 
   return (
@@ -28,7 +31,12 @@ function Navigation() {
           </Link>
         </div>
       ) : (
-        <span onClick={handleSignOut}>Sign-out</span>
+        <span
+          className="cursor-pointer text-neutral-200"
+          onClick={handleSignOut}
+        >
+          Sign-Out
+        </span>
       )}
     </nav>
   );

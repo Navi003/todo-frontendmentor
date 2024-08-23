@@ -6,31 +6,51 @@ import { useState } from "react";
 import Actions from "./_components/Actions";
 import { useUser } from "./_components/userContext";
 
+import { createMongoDBObjectId } from "@/app/lib/MongdId";
+
 export default function Home() {
-  const { setTodo, todo } = useUser();
+  const { setTodo, todo, filter } = useUser();
 
   const [input, setInput] = useState("");
+  // function getFilteredTodos() {
+  //   console.log(filter);
+  //   if (filter === "active") {
+  //     setFilteredTodos((state) => todo?.filter((todo) => !todo.completed));
+  //   }
+  //   if (filter === "completed") {
+  //     setFilteredTodos((state) => todo?.filter((todo) => todo.completed));
+  //   }
+  //   setFilteredTodos(todo); // Show all todos
+  // }
 
   function handleSubmit(e) {
+    console.log(filter);
     e.preventDefault();
     console.log(todo);
     setTodo((state) => [
       ...state,
-      { id: Math.random(), text: input, active: true, complete: false },
+      {
+        _id: createMongoDBObjectId(),
+        text: input,
+        active: true,
+        completed: false,
+      },
     ]);
 
     setInput("");
   }
 
   function handleDelete(id) {
-    setTodo((state) => state.filter((todo) => todo.id !== id));
+    console.log(id);
+    setTodo((state) => state.filter((todo) => todo._id !== id));
   }
   function handleCompleted(id) {
     setTodo((prevTodo) =>
       prevTodo.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todo._id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
+    console.log(todo);
   }
 
   return (
@@ -48,7 +68,7 @@ export default function Home() {
         {todo?.map((todo) => {
           return (
             <div
-              key={todo.id}
+              key={todo._id}
               className="flex justify-between w-full p-4 font-light bg-dark-very-dark-grayish-blue-2 text-dark-light-grayish-blue "
             >
               <p
@@ -57,7 +77,7 @@ export default function Home() {
                 }`}
               >
                 <span
-                  onClick={() => handleCompleted(todo.id)}
+                  onClick={() => handleCompleted(todo._id)}
                   className="cursor-pointer w-[25px] h-[25px] flex items-center justify-center border-[.2px] rounded-full p-0.5"
                   style={{
                     background: `${
@@ -80,7 +100,7 @@ export default function Home() {
               </p>
               <span
                 className="cursor-pointer"
-                onClick={() => handleDelete(todo.id)}
+                onClick={() => handleDelete(todo._id)}
               >
                 <Image
                   height={25}
