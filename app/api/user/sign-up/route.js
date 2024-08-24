@@ -5,7 +5,7 @@ export const POST = async (request, response) => {
   //getting data from request Body
 
   const data = await request.json();
-  console.log(data);
+  data;
 
   try {
     await connectToDb();

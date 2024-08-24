@@ -9,11 +9,11 @@ import { useUser } from "./_components/userContext";
 import { createMongoDBObjectId } from "@/app/lib/MongdId";
 
 export default function Home() {
-  const { setTodo, todo, filter } = useUser();
+  const { setTodo, todo } = useUser();
 
   const [input, setInput] = useState("");
   // function getFilteredTodos() {
-  //   console.log(filter);
+  //   (filter);
   //   if (filter === "active") {
   //     setFilteredTodos((state) => todo?.filter((todo) => !todo.completed));
   //   }
@@ -24,9 +24,8 @@ export default function Home() {
   // }
 
   function handleSubmit(e) {
-    console.log(filter);
     e.preventDefault();
-    console.log(todo);
+
     setTodo((state) => [
       ...state,
       {
@@ -41,7 +40,6 @@ export default function Home() {
   }
 
   function handleDelete(id) {
-    console.log(id);
     setTodo((state) => state.filter((todo) => todo._id !== id));
   }
   function handleCompleted(id) {
@@ -50,7 +48,6 @@ export default function Home() {
         todo._id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
-    console.log(todo);
   }
 
   return (
@@ -62,6 +59,7 @@ export default function Home() {
           value={input}
           type="text"
           className="w-full p-4 pl-16 font-light shadow-md bg-dark-very-dark-grayish-blue-2 text-dark-light-grayish-blue"
+          required
         />
       </form>
       <div className="divide-y divide-neutral-dark-grayish-blue ">

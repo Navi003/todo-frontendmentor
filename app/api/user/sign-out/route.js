@@ -4,29 +4,33 @@ import { connectToDb } from "@/app/services/mongodb";
 import { ObjectId } from "mongodb";
 // import { checkUser } from "@/lib/hashPassword";
 // import { cookies } from "next/headers";
-// import { jwtDecode } from "jwt-decode";
+import jwt from "jsonwebtoken";
 
 export const POST = async (request, response) => {
+  // (request);
+
   const data = await request.json();
+  const decodedTokenData = jwt.verify(data.token, "userToken");
+  console.log(data);
 
   try {
     await connectToDb();
 
     const foundUser = await User.findOne({
-      email: "dhimannavjot1@gmail.com",
+      email: decodedTokenData.email,
     });
 
     const result = await foundUser.updateOne({
-      $set: { todos: { items: data } },
+      $set: { todos: { items: data.todo } },
     });
-    console.log(result);
+    result;
 
     return Response.json({
       message: "sucess",
       status: 201,
     });
   } catch (error) {
-    console.log(error);
+    error;
     return Response.json({
       message: "fail",
       status: 450,

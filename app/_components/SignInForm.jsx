@@ -5,6 +5,7 @@ import Input from "../_components/Input";
 import { sendRequest } from "@/app/services/sendRequest";
 import Link from "next/link";
 import { useUser } from "../_components/userContext";
+import storeDataInLocalStorage from "../lib/storeInlocalStorage";
 function SignForm() {
   const { setUser, setTodo } = useUser();
 
@@ -16,22 +17,24 @@ function SignForm() {
 
   function handleChange(e) {
     const { name, value } = e.target;
-    console.log(name);
+    name;
     const newFormData = { ...data };
     newFormData[name] = value;
-    console.log(data);
+    data;
     setData(newFormData);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(data);
+    data;
 
     const res = await sendRequest(data, "/api/user/sign-in");
     const userData = await res.json();
-    console.log(userData);
+    userData;
+
     if (res.status === 200) {
+      storeDataInLocalStorage("userToken", userData.data);
       setUser(userData.data);
       setTodo(userData.data.todos.items);
 

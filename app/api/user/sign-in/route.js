@@ -4,7 +4,7 @@ import { connectToDb } from "@/app/services/mongodb";
 // import { checkUser } from "@/lib/hashPassword";
 // import { cookies } from "next/headers";
 // import { jwtDecode } from "jwt-decode";
-
+import jwt from "jsonwebtoken";
 export const POST = async (request, response) => {
   const data = await request.json();
 
@@ -14,7 +14,15 @@ export const POST = async (request, response) => {
     const foundUser = await User.findOne({
       email: data.email,
     });
-    console.log(foundUser);
+
+    const jwtToken = jwt.sign(
+      {
+        email: foundUser.email,
+        password: foundUser.password,
+      },
+      "userToken"
+    );
+
     if (foundUser.password === data.password) {
       return Response.json({
         message: "sucess",
@@ -22,14 +30,15 @@ export const POST = async (request, response) => {
         data: {
           todos: foundUser.todos,
           name: foundUser.name,
+          token: jwtToken,
         },
       });
     }
   } catch (error) {
-    console.log(error);
+    error;
     return Response.json({
-      message: "fail",
-      status: 450,
+      message: "Credintials not matched",
+      status: 404,
     });
   }
 };

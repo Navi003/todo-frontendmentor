@@ -1,5 +1,5 @@
 export async function sendRequest(data, url) {
-  console.log(data);
+  data;
   const res = await fetch(url, {
     method: "POST",
     headers: {

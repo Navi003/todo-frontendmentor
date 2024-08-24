@@ -7,7 +7,7 @@ export const connectToDb = async () => {
 
   mongoose.connection.syncIndexes();
   if (isConcted) {
-    console.log("MongoDb Connected");
+    ("MongoDb Connected");
     return;
   }
 
@@ -16,8 +16,8 @@ export const connectToDb = async () => {
       "mongodb+srv://navi:navi003@main.o8q8wfc.mongodb.net/todo-frontendmentor"
     );
     isConcted = true;
-    console.log("MongoDb Connected");
+    ("MongoDb Connected");
   } catch (error) {
-    console.log(error);
+    error;
   }
 };
