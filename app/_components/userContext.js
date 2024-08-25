@@ -4,21 +4,13 @@ import { createContext, useState, useContext } from "react";
 const UserContext = createContext();
 
 function UserProvider({ children }) {
-  const initState = false;
-  const [logedIn, setLogedIn] = useState(initState);
+  const [logedIn, setLogedIn] = useState(false);
   const [user, setUser] = useState("");
   const [todo, setTodo] = useState([]);
 
   return (
     <UserContext.Provider
-      value={{
-        setLogedIn,
-        logedIn,
-        setUser,
-        user,
-        todo,
-        setTodo,
-      }}
+      value={{ setLogedIn, logedIn, setUser, user, todo, setTodo }}
     >
       {children}
     </UserContext.Provider>
@@ -28,8 +20,9 @@ function UserProvider({ children }) {
 function useUser() {
   const context = useContext(UserContext);
 
-  if (context === undefined)
+  if (context === undefined) {
     throw new Error("Context was used outside Provider");
+  }
 
   return context;
 }
