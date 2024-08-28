@@ -27,14 +27,12 @@ function SignForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    data;
-
     const res = await sendRequest(data, "/api/user/sign-in");
     const userData = await res.json();
-    userData;
 
     if (res.status === 200) {
-      storeDataInLocalStorage("userToken", userData.data);
+      console.log(userData);
+      // storeDataInLocalStorage("authUser", userData.data);
       setUser(userData.data);
       setTodo(userData.data.todos.items);
 

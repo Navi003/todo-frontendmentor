@@ -5,9 +5,11 @@ import { connectToDb } from "@/app/services/mongodb";
 // import { cookies } from "next/headers";
 // import { jwtDecode } from "jwt-decode";
 import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 export const POST = async (request, response) => {
   const data = await request.json();
 
+  const res = NextResponse.next();
   try {
     await connectToDb();
 
@@ -15,6 +17,9 @@ export const POST = async (request, response) => {
       email: data.email,
     });
 
+    // console.log(foundUser);
+
+    console.log(data.password);
     const jwtToken = jwt.sign(
       {
         email: foundUser.email,
@@ -24,18 +29,18 @@ export const POST = async (request, response) => {
     );
 
     if (foundUser.password === data.password) {
+      res.cookies.set("Authorization", `Bearer ${jwtToken}`);
       return Response.json({
         message: "sucess",
         status: 200,
         data: {
           todos: foundUser.todos,
           name: foundUser.name,
-          token: jwtToken,
         },
       });
     }
   } catch (error) {
-    error;
+    console.log(error.message);
     return Response.json({
       message: "Credintials not matched",
       status: 404,

@@ -1,17 +1,16 @@
 import User from "@/app/models/user";
 
 import { connectToDb } from "@/app/services/mongodb";
-import { ObjectId } from "mongodb";
-// import { checkUser } from "@/lib/hashPassword";
-// import { cookies } from "next/headers";
+
 import jwt from "jsonwebtoken";
 
 export const POST = async (request, response) => {
   // (request);
 
   const data = await request.json();
-  const decodedTokenData = jwt.verify(data.token, "userToken");
-  console.log(data);
+
+  const cookies = request.headers.get("cookie");
+  const decodedTokenData = jwt.verify(token, "userToken");
 
   try {
     await connectToDb();

@@ -11,33 +11,6 @@ export default function Home() {
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
 
-  // Load todos from localStorage after the component mounts
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const storedTodos = localStorage.getItem("todos");
-        console.log("Loading todos from localStorage:", storedTodos);
-        if (storedTodos) {
-          setTodo(JSON.parse(storedTodos));
-        }
-      } catch (error) {
-        console.error("Error loading todos from localStorage:", error);
-      }
-    }
-  }, []);
-
-  // Save todos to localStorage whenever they change
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        console.log("Saving todos to localStorage:", todo);
-        localStorage.setItem("todos", JSON.stringify(todo));
-      } catch (error) {
-        console.error("Error saving todos to localStorage:", error);
-      }
-    }
-  }, [todo]);
-
   // Update filteredTodos whenever todo or filter changes
   useEffect(() => {
     if (filter === "all") {
