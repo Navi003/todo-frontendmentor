@@ -4,7 +4,7 @@ import React from "react";
 import { useUser } from "./userContext";
 import { sendRequest } from "../services/sendRequest";
 import { getAuthorizationToken } from "../lib/storeInlocalStorage";
-import { clearStorage, clearTodos } from "../services/localstorageAPI";
+import { clearStorage } from "../services/localstorageAPI";
 
 function Navigation() {
   const { user, todo, setTodo, setUser } = useUser();
