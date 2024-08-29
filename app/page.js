@@ -4,12 +4,13 @@ import Heading from "./_components/Heading";
 import { useState, useEffect } from "react";
 import Actions from "./_components/Actions";
 import { createMongoDBObjectId } from "@/app/lib/MongdId";
+import { useUser } from "./_components/userContext";
 
 export default function Home() {
-  const [todo, setTodo] = useState([]);
   const [input, setInput] = useState("");
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
+  const { todo, setTodo } = useUser();
 
   // Update filteredTodos whenever todo or filter changes
   useEffect(() => {

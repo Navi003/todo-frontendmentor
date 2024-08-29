@@ -3,24 +3,27 @@ import Link from "next/link";
 import React from "react";
 import { useUser } from "./userContext";
 import { sendRequest } from "../services/sendRequest";
-import { useRouter } from "next/navigation";
+import { getAuthorizationToken } from "../lib/storeInlocalStorage";
+import { clearStorage, clearTodos } from "../services/localstorageAPI";
 
 function Navigation() {
-  const router = useRouter();
-  const { user, logout, todo, setTodo, setUser } = useUser();
+  const { user, todo, setTodo, setUser } = useUser();
 
   async function handleSignOut() {
     // const storedUser = JSON.parse(localStorage.getItem("userToken"));
     // const storedTodos = JSON.parse(localStorage.getItem("todos"));
-
+    console.log(user);
     // This needs to be changed in future where we will simply take all the data from local storage and send it as one object with token.
     //or we can save token in headears and take it out from user object in local storage
-    const res = await sendRequest({ todo: todo }, "/api/user/sign-out");
-    const userData = await res.json();
+    const token = getAuthorizationToken("token");
+    console.log(todo);
+    await sendRequest(todo, "/api/user/sign-out", token);
 
     setTodo([]);
     setUser("");
-    localStorage.clear();
+
+    clearStorage("todos");
+    clearStorage("token");
   }
 
   return (

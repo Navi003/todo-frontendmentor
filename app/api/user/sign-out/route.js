@@ -5,11 +5,11 @@ import { connectToDb } from "@/app/services/mongodb";
 import jwt from "jsonwebtoken";
 
 export const POST = async (request, response) => {
-  // (request);
-
   const data = await request.json();
+  const token = JSON.parse(
+    request.headers.get("authorization").split(" ").at(1).trim()
+  );
 
-  const cookies = request.headers.get("cookie");
   const decodedTokenData = jwt.verify(token, "userToken");
 
   try {
@@ -20,7 +20,7 @@ export const POST = async (request, response) => {
     });
 
     const result = await foundUser.updateOne({
-      $set: { todos: { items: data.todo } },
+      $set: { todos: { items: data.data } },
     });
     result;
 

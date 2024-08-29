@@ -8,28 +8,22 @@ import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 export const POST = async (request, response) => {
   const data = await request.json();
+  const { email, password } = data.data;
 
-  const res = NextResponse.next();
   try {
     await connectToDb();
 
-    const foundUser = await User.findOne({
-      email: data.email,
-    });
+    const foundUser = await User.findOne({ email });
 
-    // console.log(foundUser);
-
-    console.log(data.password);
     const jwtToken = jwt.sign(
       {
-        email: foundUser.email,
-        password: foundUser.password,
+        email,
+        password,
       },
       "userToken"
     );
 
-    if (foundUser.password === data.password) {
-      res.cookies.set("Authorization", `Bearer ${jwtToken}`);
+    if (foundUser.password === password) {
       return Response.json({
         message: "sucess",
         status: 200,
@@ -37,12 +31,14 @@ export const POST = async (request, response) => {
           todos: foundUser.todos,
           name: foundUser.name,
         },
+        Authorization: jwtToken,
       });
+    } else {
+      throw "Something went wront please check username and password";
     }
   } catch (error) {
-    console.log(error.message);
     return Response.json({
-      message: "Credintials not matched",
+      message: error.message,
       status: 404,
     });
   }

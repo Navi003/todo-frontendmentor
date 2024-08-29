@@ -5,7 +5,10 @@ import Input from "../_components/Input";
 import { sendRequest } from "@/app/services/sendRequest";
 import Link from "next/link";
 import { useUser } from "../_components/userContext";
+
+import { addTodo } from "../services/localstorageAPI";
 import storeDataInLocalStorage from "../lib/storeInlocalStorage";
+
 function SignForm() {
   const { setUser, setTodo } = useUser();
 
@@ -30,11 +33,13 @@ function SignForm() {
     const res = await sendRequest(data, "/api/user/sign-in");
     const userData = await res.json();
 
+    console.log(userData);
+
     if (res.status === 200) {
-      console.log(userData);
-      // storeDataInLocalStorage("authUser", userData.data);
+      storeDataInLocalStorage("token", userData.Authorization);
       setUser(userData.data);
       setTodo(userData.data.todos.items);
+      addTodo(userData.data.todos.items);
 
       router.push("/");
     }

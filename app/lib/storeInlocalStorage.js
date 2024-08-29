@@ -11,3 +11,6 @@ export default function storeDataInLocalStorage(key, data) {
     console.error("Failed to store data in localStorage:", error);
   }
 }
+export function getAuthorizationToken(key) {
+  return localStorage.getItem(key);
+}

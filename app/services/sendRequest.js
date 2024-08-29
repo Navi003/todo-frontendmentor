@@ -1,14 +1,14 @@
 export async function sendRequest(data, url, token = "") {
-  data;
+  console.log(data);
   const res = await fetch(url, {
     method: "POST",
 
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: `Bearer ${token && token}`,
     },
 
-    body: JSON.stringify(data),
+    body: JSON.stringify({ data: data, token }),
   });
 
   return res;
