@@ -22,7 +22,7 @@ function Navigation() {
     setTodo([]);
     setUser("");
 
-    clearStorage("todos");
+    clearStorage("todo");
     clearStorage("token");
   }
 
