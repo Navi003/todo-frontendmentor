@@ -5,14 +5,21 @@ import { useState, useEffect } from "react";
 import Actions from "./_components/Actions";
 import { createMongoDBObjectId } from "@/app/lib/MongdId";
 import { useUser } from "./_components/userContext";
+import { addTodo, getTodos } from "./services/localstorageAPI";
 
 export default function Home() {
   const [input, setInput] = useState("");
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
-  const { todo, setTodo } = useUser();
+  const { todo, setTodo, user } = useUser();
 
-  // Update filteredTodos whenever todo or filter changes
+  useEffect(() => {
+    if (!user) {
+      const savedTodos = JSON.parse(localStorage.getItem("localTodos")) || [];
+      setTodo(savedTodos);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (filter === "all") {
       setFilteredTodos(todo);
@@ -22,6 +29,12 @@ export default function Home() {
       setFilteredTodos(todo.filter((todo) => todo.completed));
     }
   }, [filter, todo]);
+
+  useEffect(() => {
+    if (!user) {
+      localStorage.setItem("localTodos", JSON.stringify(todo));
+    }
+  }, [todo, user]);
 
   function handleSubmit(e) {
     e.preventDefault();

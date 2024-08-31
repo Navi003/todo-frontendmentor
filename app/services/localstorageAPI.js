@@ -1,6 +1,6 @@
 // Function to get the existing to-do list from local storage
-export function getTodos() {
-  let todos = localStorage.getItem("todos");
+export function getTodos(key = "todos") {
+  let todos = localStorage.getItem(key);
   if (todos) {
     return JSON.parse(todos);
   } else {
@@ -9,10 +9,10 @@ export function getTodos() {
 }
 
 // Function to add a new to-do item and store it in local storage
-export function addTodo(todo) {
+export function addTodo(todo, key = "todo") {
   let todos = getTodos();
   todos.push(todo);
-  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem(key, JSON.stringify(todos));
 }
 
 // Function to remove a to-do item by index
