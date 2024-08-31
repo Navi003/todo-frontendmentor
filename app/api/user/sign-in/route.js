@@ -5,7 +5,6 @@ import { connectToDb } from "@/app/services/mongodb";
 // import { cookies } from "next/headers";
 // import { jwtDecode } from "jwt-decode";
 import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
 export const POST = async (request, response) => {
   const data = await request.json();
   const { email, password } = data.data;
