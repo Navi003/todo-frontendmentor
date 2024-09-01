@@ -6,12 +6,17 @@ import { connectToDb } from "@/app/services/mongodb";
 // import { jwtDecode } from "jwt-decode";
 import jwt from "jsonwebtoken";
 export const POST = async (request, response) => {
-  const data = await request.json();
-  const { email, password } = data.data;
+  const token = request.headers.get("authorization").split(" ").at(1).trim();
+
+  const decodedTokenData = jwt.verify(token, "userToken");
 
   try {
-    const foundUser = await User.findOne({ email });
+    await connectToDb();
 
+    const { email, password, todos, name } = await User.findOne({
+      email: decodedTokenData.email,
+    });
+    console.log(decodedTokenData);
     const jwtToken = jwt.sign(
       {
         email,
@@ -19,20 +24,15 @@ export const POST = async (request, response) => {
       },
       "userToken"
     );
-
-    if (foundUser.password === password) {
-      return Response.json({
-        message: "sucess",
-        status: 200,
-        data: {
-          todos: foundUser.todos,
-          name: foundUser.name,
-        },
-        Authorization: jwtToken,
-      });
-    } else {
-      throw "Something went wront please check username and password";
-    }
+    return Response.json({
+      message: "sucess",
+      status: 200,
+      data: {
+        todos,
+        name,
+      },
+      Authorization: jwtToken,
+    });
   } catch (error) {
     return Response.json({
       message: error.message,

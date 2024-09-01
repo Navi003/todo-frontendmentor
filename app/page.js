@@ -6,14 +6,39 @@ import { createMongoDBObjectId } from "@/app/lib/MongdId";
 import { useUser } from "./_components/userContext";
 
 import TodoItem from "./_components/TodoItem";
+import { sendRequest } from "./services/sendRequest";
+import storeDataInLocalStorage from "./lib/storeInlocalStorage";
+import { useRouter } from "next/navigation";
+import { addTodo } from "./services/localstorageAPI";
 
 export default function Home() {
   const [input, setInput] = useState("");
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
-  const { todo, setTodo, user } = useUser();
+  const { todo, setTodo, user, setUser } = useUser();
+  const router = useRouter();
 
-  useEffect(() => {});
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) return;
+      const token = JSON.parse(localStorage.getItem("token"));
+
+      if (token) {
+        const res = await sendRequest(null, "/api/user/sign-in-token", token);
+        const userData = await res.json();
+
+        console.log(res);
+
+        storeDataInLocalStorage("token", userData.Authorization);
+        setUser(userData.data);
+        setTodo(userData.data.todos.items);
+        addTodo(userData.data.todos.items);
+
+        router.push("/");
+      }
+    };
+    fetchData();
+  });
 
   useEffect(() => {
     if (!user) {
