@@ -16,7 +16,7 @@ export const POST = async (request, response) => {
     const { email, password, todos, name } = await User.findOne({
       email: decodedTokenData.email,
     });
-    console.log(decodedTokenData);
+
     const jwtToken = jwt.sign(
       {
         email,

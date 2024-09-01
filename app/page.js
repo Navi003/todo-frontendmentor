@@ -27,8 +27,6 @@ export default function Home() {
         const res = await sendRequest(null, "/api/user/sign-in-token", token);
         const userData = await res.json();
 
-        console.log(res);
-
         storeDataInLocalStorage("token", userData.Authorization);
         setUser(userData.data);
         setTodo(userData.data.todos.items);
@@ -38,7 +36,7 @@ export default function Home() {
       }
     };
     fetchData();
-  });
+  }, []);
 
   useEffect(() => {
     if (!user) {

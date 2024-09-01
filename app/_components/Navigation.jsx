@@ -10,13 +10,8 @@ function Navigation() {
   const { user, todo, setTodo, setUser } = useUser();
 
   async function handleSignOut() {
-    // const storedUser = JSON.parse(localStorage.getItem("userToken"));
-    // const storedTodos = JSON.parse(localStorage.getItem("todos"));
-    console.log(user);
-    // This needs to be changed in future where we will simply take all the data from local storage and send it as one object with token.
-    //or we can save token in headears and take it out from user object in local storage
     const token = getAuthorizationToken("token");
-    console.log(todo);
+
     await sendRequest(todo, "/api/user/sign-out", token);
 
     setTodo([]);
