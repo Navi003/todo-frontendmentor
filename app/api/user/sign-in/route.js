@@ -10,7 +10,9 @@ export const POST = async (request, response) => {
   const { email, password } = data.data;
 
   try {
-    await connectToDb();
+    const x = await connectToDb();
+
+    console.log(x);
 
     const foundUser = await User.findOne({ email });
 

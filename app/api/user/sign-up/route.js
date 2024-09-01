@@ -5,15 +5,16 @@ export const POST = async (request, response) => {
   //getting data from request Body
 
   const data = await request.json();
-  data;
+
+  const { name, email, password } = data.data;
 
   try {
     await connectToDb();
 
     const createdUser = await User.create({
-      name: data.name,
-      email: data.email,
-      password: data.password,
+      name,
+      email,
+      password,
     });
 
     return new Response(JSON.stringify(createdUser), {
