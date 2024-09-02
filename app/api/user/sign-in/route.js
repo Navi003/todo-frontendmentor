@@ -1,26 +1,27 @@
 import User from "@/app/models/user";
 
 import { connectToDb } from "@/app/services/mongodb";
-// import { checkUser } from "@/lib/hashPassword";
-// import { cookies } from "next/headers";
-// import { jwtDecode } from "jwt-decode";
+
 import jwt from "jsonwebtoken";
+
+import bcrypt from "bcrypt";
 export const POST = async (request, response) => {
   const data = await request.json();
   const { email, password } = data.data;
 
   try {
     const foundUser = await User.findOne({ email });
+    const match = await bcrypt.compare(password, foundUser.password);
 
-    const jwtToken = jwt.sign(
-      {
-        email,
-        password,
-      },
-      "userToken"
-    );
+    if (match) {
+      const jwtToken = jwt.sign(
+        {
+          email,
+          password: foundUser.password,
+        },
+        "userToken"
+      );
 
-    if (foundUser.password === password) {
       return Response.json({
         message: "sucess",
         status: 200,
@@ -31,7 +32,7 @@ export const POST = async (request, response) => {
         Authorization: jwtToken,
       });
     } else {
-      throw "Something went wront please check username and password";
+      throw "Something went wrong please check username and password";
     }
   } catch (error) {
     return Response.json({

@@ -32,6 +32,7 @@ function SignForm() {
 
     const res = await sendRequest(data, "/api/user/sign-in");
     const userData = await res.json();
+    console.log(userData);
 
     if (res.status === 200) {
       storeDataInLocalStorage("token", userData.Authorization);

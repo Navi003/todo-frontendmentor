@@ -10,13 +10,14 @@ import { sendRequest } from "./services/sendRequest";
 import storeDataInLocalStorage from "./lib/storeInlocalStorage";
 import { useRouter } from "next/navigation";
 import { addTodo } from "./services/localstorageAPI";
-import { DragDropContext, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 export default function Home() {
   const [input, setInput] = useState("");
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
   const { todo, setTodo, user, setUser } = useUser();
+  const [todos, updateTodos] = useState(filteredTodos);
   const router = useRouter();
 
   useEffect(() => {
@@ -90,12 +91,34 @@ export default function Home() {
         />
       </form>
 
-      <ul className="divide-y divide-neutral-dark-grayish-blue">
-        {filteredTodos.map((todo) => (
-          <TodoItem key={todo._id} todo={todo} setTodo={setTodo} />
-        ))}
-        <Actions length={filteredTodos.length} setFilter={setFilter} />
-      </ul>
+      <DragDropContext>
+        <Droppable droppableId="todos">
+          {(provided) => (
+            <ul
+              className="divide-y divide-neutral-dark-grayish-blue"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {filteredTodos.map((todo, index) => (
+                <Draggable key={todo._id} draggableId={todo._id} index={index}>
+                  {(provided) => (
+                    <TodoItem
+                      {...provided.draggableProps}
+                      ref={provided.innerRef}
+                      {...provided.dragHandleProps}
+                      todo={todo}
+                      setTodo={setTodo}
+                    />
+                  )}
+                </Draggable>
+              ))}
+
+              <Actions length={filteredTodos.length} setFilter={setFilter} />
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
     </main>
   );
 }
